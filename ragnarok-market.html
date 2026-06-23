@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor de Mercado — Ragnarok LATAM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117; --bg2: #181c27; --bg3: #1e2235;
+    --border: #2a2f45; --text: #e2e4ef; --muted: #8b90a8; --hint: #555c7a;
+    --green: #4caf82; --green-bg: rgba(76,175,130,.12);
+    --amber: #f0a500; --amber-bg: rgba(240,165,0,.12);
+    --red: #e05c5c; --red-bg: rgba(224,92,92,.1);
+    --blue: #5b8dee; --blue-bg: rgba(91,141,238,.12);
+    --accent: #6c63ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; min-height: 100vh; }
+  .nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--text); text-decoration: none; }
+  .nav-logo img { width: 28px; height: 28px; object-fit: contain; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; border: 1px solid transparent; }
+  .badge-live { background: var(--green-bg); color: var(--green); border-color: rgba(76,175,130,.3); }
+  .badge-loading { background: var(--amber-bg); color: var(--amber); border-color: rgba(240,165,0,.3); }
+  .badge-err { background: var(--red-bg); color: var(--red); border-color: rgba(224,92,92,.3); }
+  .spinner { display: inline-block; width: 10px; height: 10px; border: 2px solid var(--border); border-top-color: var(--amber); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 4px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .container { max-width: 1300px; margin: 0 auto; padding: 18px 16px; }
+  .tabs-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .tabs { display: flex; gap: 3px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
+  .tab { font-size: 12px; padding: 5px 14px; border-radius: 6px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-family: inherit; transition: all .15s; }
+  .tab.active { background: var(--bg3); color: var(--text); border: 1px solid var(--border); font-weight: 500; }
+  .tab:hover:not(.active) { color: var(--text); }
+  .thresh-box { display: flex; align-items: center; gap: 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+  .thresh-box label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .thresh-box input { width: 56px; text-align: center; }
+  .btn-refresh { padding: 6px 16px; border-radius: 8px; border: 1px solid var(--accent); background: rgba(108,99,255,.15); color: var(--accent); cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; transition: all .15s; white-space: nowrap; }
+  .btn-refresh:hover { background: rgba(108,99,255,.3); }
+  .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .filter-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .filter-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+  input, select { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); border-radius: 7px; padding: 6px 10px; font-size: 13px; font-family: inherit; height: 32px; outline: none; transition: border .15s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  input::placeholder { color: var(--hint); }
+  select option { background: var(--bg2); }
+  .manual-row { display: flex; gap: 5px; }
+  .manual-row input { flex: 1; min-width: 0; }
+  .btn-add { width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg3); color: var(--muted); cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; }
+  .btn-add:hover { border-color: var(--accent); color: var(--accent); }
+  .manual-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .man-tag { font-size: 11px; background: var(--blue-bg); border: 1px solid rgba(91,141,238,.3); color: var(--blue); border-radius: 20px; padding: 2px 8px; display: flex; align-items: center; gap: 5px; }
+  .man-tag button { background: none; border: none; color: var(--blue); cursor: pointer; font-size: 13px; padding: 0; line-height: 1; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; }
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .stat-val { font-size: 20px; font-weight: 600; }
+  .stat-val.green { color: var(--green); }
+  .stat-val.amber { color: var(--amber); }
+  .stat-val.sm { font-size: 13px; }
+  .alerts { background: var(--amber-bg); border: 1px solid rgba(240,165,0,.3); border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: none; }
+  .alert-head { font-size: 12px; font-weight: 600; color: var(--amber); margin-bottom: 5px; }
+  .alert-item { font-size: 12px; color: var(--amber); padding: 2px 0; }
+  .table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 700px; }
+  thead th { background: var(--bg3); padding: 9px 12px; text-align: left; font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
+  thead th:hover, thead th.sorted { color: var(--text); }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; cursor: pointer; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover td { background: rgba(255,255,255,.03); }
+  tbody tr.row-alert td { background: rgba(240,165,0,.06); }
+  tbody tr.row-alert:hover td { background: rgba(240,165,0,.1); }
+  td { padding: 8px 12px; vertical-align: middle; font-size: 13px; }
+  .item-cell { display: flex; align-items: center; gap: 9px; }
+  .item-icon { width: 30px; height: 30px; object-fit: contain; border-radius: 5px; background: var(--bg3); flex-shrink: 0; }
+  .item-name { font-size: 13px; font-weight: 500; }
+  .item-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+  .price { font-weight: 600; white-space: nowrap; }
+  .pill { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; display: inline-block; white-space: nowrap; border: 1px solid transparent; }
+  .pill-buy  { background: var(--green-bg); color: var(--green); border-color: rgba(76,175,130,.3); }
+  .pill-high { background: var(--red-bg);   color: var(--red);   border-color: rgba(224,92,92,.3); }
+  .pill-avg  { background: var(--bg3);      color: var(--muted); border-color: var(--border); }
+  .pill-none { background: var(--bg3);      color: var(--hint);  border-color: var(--border); }
+  .diff-pos { color: var(--green); font-weight: 600; }
+  .diff-neg { color: var(--red);   font-weight: 600; }
+  .map-btn { font-size: 10px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg3); color: var(--muted); cursor: pointer; white-space: nowrap; font-family: inherit; transition: all .15s; }
+  .map-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .seller-cell { font-size: 11px; }
+  .seller-name { color: var(--text); }
+  .store-name  { color: var(--muted); font-size: 10px; margin-top: 1px; }
+  .empty { text-align: center; color: var(--muted); padding: 3rem; font-size: 14px; line-height: 2; }
+  .pag { display: flex; gap: 4px; margin-top: 12px; flex-wrap: wrap; }
+  .pag button { font-size: 12px; padding: 4px 10px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg2); color: var(--muted); cursor: pointer; font-family: inherit; transition: all .15s; }
+  .pag button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .pag button.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .pag button:disabled { opacity: .3; cursor: default; }
+  .footer { margin-top: 10px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 11px; color: var(--hint); }
+  .toast { position: fixed; bottom: 18px; right: 18px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 13px; color: var(--text); opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999; max-width: 320px; }
+  .toast.show { opacity: 1; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity .2s; padding: 16px; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; width: 100%; max-width: 700px; max-height: 88vh; overflow-y: auto; padding: 20px; }
+  .modal-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .modal-icon { width: 36px; height: 36px; object-fit: contain; background: var(--bg3); border-radius: 6px; }
+  .modal-title { font-size: 15px; font-weight: 600; }
+  .modal-sub { font-size: 12px; color: var(--muted); }
+  .modal-close { margin-left: auto; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 5px 12px; cursor: pointer; font-size: 13px; font-family: inherit; }
+  .modal-close:hover { border-color: var(--red); color: var(--red); }
+  .modal-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+  .modal-tabs button { font-size: 12px; padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg3); color: var(--muted); cursor: pointer; font-family: inherit; }
+  .modal-tabs button.active { border-color: var(--accent); color: var(--accent); }
+  .chart-wrap { height: 200px; margin-bottom: 14px; }
+  .hist-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .hist-table th { background: var(--bg3); padding: 6px 10px; text-align: left; color: var(--muted); font-size: 10px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .hist-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  .hist-table tr:last-child td { border-bottom: none; }
+  .hist-table .price { color: var(--green); font-weight: 500; }
+  .hist-table .qty { color: var(--muted); }
+  .modal-empty { text-align: center; color: var(--muted); padding: 2rem; font-size: 13px; display: none; }
+  .info-banner { background: var(--blue-bg); border: 1px solid rgba(91,141,238,.3); border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; font-size: 12px; color: var(--blue); display: none; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <img src="https://paramercado.com.br/imagens/ParamercadoLogo.png" onerror="this.style.display='none'" alt="">
+    Monitor de Mercado
+  </a>
+  <div class="nav-right">
+    <span class="badge badge-live" id="live-badge">● ao vivo</span>
+    <span style="font-size:12px;color:var(--muted)">Ragnarok LATAM</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="info-banner" id="info-banner"></div>
+
+  <div class="tabs-row">
+    <div class="tabs" id="tabs-server">
+      <button class="tab active" data-server="FREYA">Freya</button>
+      <button class="tab" data-server="NIDHOGG">Nidhogg</button>
+    </div>
+    <div class="tabs" id="tabs-type">
+      <button class="tab active" data-type="BUY">Comprar</button>
+      <button class="tab" data-type="SELL">Vender</button>
+    </div>
+    <div class="thresh-box">
+      <label for="thresh">Alertar abaixo de</label>
+      <input type="number" id="thresh" value="85" min="1" max="99" step="1">
+      <label>% da média</label>
+    </div>
+    <button class="btn-refresh" id="btn-refresh">↻ Atualizar</button>
+  </div>
+
+  <div class="filters">
+    <div class="filter-box">
+      <div class="filter-label">Buscar item</div>
+      <input type="text" id="search" placeholder="ex: Carta Kung Fu Panda...">
+    </div>
+    <div class="filter-box">
+      <div class="filter-label">Mapa</div>
+      <select id="sel-map"><option value="">Todos os mapas</option></select>
+    </div>
+    <div class="filter-box">
+      <div class="filter-label">Itens por página</div>
+      <select id="sel-page-size">
+        <option value="50">50 por página</option>
+        <option value="100">100 por página</option>
+        <option value="200">200 por página</option>
+      </select>
+    </div>
+    <div class="filter-box">
+      <div class="filter-label">Definir média manual</div>
+      <div class="manual-row">
+        <input type="text" id="man-item" placeholder="nome do item">
+        <input type="number" id="man-price" placeholder="preço" style="width:90px">
+        <button class="btn-add" id="btn-manual" title="Adicionar">+</button>
+      </div>
+      <div class="manual-tags" id="manual-tags"></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Total no banco</div><div class="stat-val" id="s-total">—</div></div>
+    <div class="stat"><div class="stat-label">Exibindo</div><div class="stat-val" id="s-showing">—</div></div>
+    <div class="stat"><div class="stat-label">Alertas ativos</div><div class="stat-val amber" id="s-alerts">0</div></div>
+    <div class="stat"><div class="stat-label">Última varredura</div><div class="stat-val sm" id="s-last">—</div></div>
+  </div>
+
+  <div class="alerts" id="alerts-box">
+    <div class="alert-head">🔔 Oportunidades de compra detectadas</div>
+    <div id="alerts-list"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-col="itemId" style="width:48px">ID <span class="si">↕</span></th>
+          <th data-col="itemName" style="width:30%">Item <span class="si">↕</span></th>
+          <th data-col="itemPrice" class="sorted" style="width:11%">Preço <span class="si">↑</span></th>
+          <th style="width:6%">Qtd</th>
+          <th style="width:11%">Média ref.</th>
+          <th style="width:7%">Dif.</th>
+          <th style="width:9%">Status</th>
+          <th style="width:14%">Vendedor / Loja</th>
+          <th style="width:12%">Mapa</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="pag" id="pag"></div>
+  <div class="footer">
+    <span id="footer-src">conectando...</span>
+    <span id="footer-time"></span>
+  </div>
+</div>
+
+<!-- MODAL HISTÓRICO -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <img class="modal-icon" id="modal-icon" src="" alt="">
+      <div>
+        <div class="modal-title" id="modal-title">—</div>
+        <div class="modal-sub"  id="modal-sub">—</div>
+      </div>
+      <button class="modal-close" id="modal-close">✕ Fechar</button>
+    </div>
+    <div class="modal-tabs"  id="modal-server-tabs"></div>
+    <div class="chart-wrap"><canvas id="hist-chart"></canvas></div>
+    <div class="modal-empty" id="modal-empty">Sem histórico disponível.</div>
+    <table class="hist-table">
+      <thead><tr><th>Data</th><th>Mín</th><th>Máx</th><th>Média</th><th>Volume</th></tr></thead>
+      <tbody id="hist-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIGURAÇÃO ──────────────────────────────────────────────
+const TARGET  = 'https://paramercado.com.br';
+const API     = TARGET + '/api';
+
+// Proxies públicos testados — tentamos em ordem até um funcionar
+const PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://cors-anywhere.herokuapp.com/${url}`,
+];
+
+let proxyIdx    = 0;   // qual proxy está funcionando
+let usingProxy  = false;
+
+async function apiFetch(path) {
+  const fullUrl = API + path;
+
+  // 1) Tenta direto (funciona se o usuário tiver CORS Unblock ativo)
+  try {
+    const r = await fetch(fullUrl, { mode: 'cors', signal: AbortSignal.timeout(5000) });
+    if (r.ok) { usingProxy = false; return r.json(); }
+  } catch(_) {}
+
+  // 2) Tenta proxies em sequência
+  for (let i = 0; i < PROXIES.length; i++) {
+    const idx = (proxyIdx + i) % PROXIES.length;
+    try {
+      const r = await fetch(PROXIES[idx](fullUrl), { signal: AbortSignal.timeout(8000) });
+      if (r.ok) {
+        proxyIdx   = idx;
+        usingProxy = true;
+        return r.json();
+      }
+    } catch(_) {}
+  }
+
+  throw new Error('Todos os proxies falharam');
+}
+
+// ── ESTADO ───────────────────────────────────────────────────
+let activeServer = 'FREYA';
+let activeType   = 'BUY';
+let sortState    = { col: 'itemPrice', dir: 'asc' };
+let currentPage  = 1;
+let pageSize     = 50;
+let totalItems   = 0;
+let allData      = [];
+let manualAvgs   = {};
+let histChart    = null;
+let histAllData  = {};
+
+const $id = id => document.getElementById(id);
+
+try {
+  const s = localStorage.getItem('ro_manual_avgs');
+  if (s) manualAvgs = JSON.parse(s);
+} catch(_) {}
+
+function saveManual() {
+  try { localStorage.setItem('ro_manual_avgs', JSON.stringify(manualAvgs)); } catch(_) {}
+}
+
+function fmtZ(n) {
+  if (n == null) return '—';
+  const v = Number(n);
+  if (v >= 1000000) return (v/1000000).toFixed(2) + 'M z';
+  if (v >= 1000)    return (v/1000).toFixed(1) + 'k z';
+  return v.toLocaleString('pt-BR') + ' z';
+}
+function fmtN(n) { return n == null ? '-' : Number(n).toLocaleString('pt-BR'); }
+
+function showToast(msg) {
+  const t = $id('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function setBadge(state) {
+  const el = $id('live-badge');
+  if (state === 'loading') { el.className='badge badge-loading'; el.innerHTML='<span class="spinner"></span>buscando'; }
+  else if (state === 'live') { el.className='badge badge-live'; el.innerHTML='● ao vivo'; }
+  else { el.className='badge badge-err'; el.innerHTML='● erro'; }
+}
+
+// ── HISTÓRICO MODAL ──────────────────────────────────────────
+function renderHistModal(server) {
+  $id('modal-server-tabs').querySelectorAll('button').forEach(b =>
+    b.classList.toggle('active', b.dataset.server === server)
+  );
+  const rows  = histAllData[server] || [];
+  const tbody = $id('hist-tbody');
+  tbody.innerHTML = '';
+  if (!rows.length) { $id('modal-empty').style.display=''; $id('hist-chart').style.display='none'; return; }
+  $id('modal-empty').style.display='none'; $id('hist-chart').style.display='';
+  rows.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML=`<td>${r.scraped_date}</td><td class="price">${fmtN(r.minItemPrice)} z</td><td class="price">${fmtN(r.maxItemPrice)} z</td><td class="price">${fmtN(r.avgItemPrice)} z</td><td class="qty">${fmtN(r.totalItemCnt)}</td>`;
+    tbody.appendChild(tr);
+  });
+  if (histChart) histChart.destroy();
+  histChart = new Chart($id('hist-chart'), {
+    type:'line',
+    data:{ labels:rows.map(r=>r.scraped_date), datasets:[
+      { label:'Mín',   data:rows.map(r=>r.minItemPrice), borderColor:'#4caf82', backgroundColor:'rgba(76,175,130,.1)',  tension:.3, pointRadius:3 },
+      { label:'Média', data:rows.map(r=>r.avgItemPrice), borderColor:'#f0a500', backgroundColor:'rgba(240,165,0,.1)',   tension:.3, pointRadius:3 },
+      { label:'Máx',   data:rows.map(r=>r.maxItemPrice), borderColor:'#e05c5c', backgroundColor:'rgba(224,92,92,.1)',   tension:.3, pointRadius:3 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{ legend:{ labels:{ color:'#8b90a8', font:{ size:11 } } },
+        tooltip:{ callbacks:{ label:ctx=>` ${ctx.dataset.label}: ${Number(ctx.parsed.y).toLocaleString('pt-BR')} z` } } },
+      scales:{
+        x:{ ticks:{ color:'#8b90a8', maxRotation:45, font:{ size:10 } }, grid:{ color:'#2a2f45' } },
+        y:{ ticks:{ color:'#8b90a8', font:{ size:10 }, callback:v=>Number(v).toLocaleString('pt-BR') }, grid:{ color:'#2a2f45' } }
+      }
+    }
+  });
+}
+
+async function openHistory(item) {
+  const overlay = $id('modal-overlay');
+  $id('modal-title').textContent = item.itemName || item.itemId;
+  $id('modal-sub').textContent   = item.databaseType || '';
+  const icon = $id('modal-icon');
+  const srcs = [
+    item.databaseImgPath ? `${TARGET}${item.databaseImgPath}` : null,
+    `https://static.divine-pride.net/images/items/item/${item.itemId}.png`,
+    `https://db.irowiki.org/image/item/${item.itemId}.png`,
+  ].filter(Boolean);
+  let si=0; icon.onerror=()=>{ if(si<srcs.length) icon.src=srcs[si++]; }; icon.src=srcs[si++];
+  $id('hist-tbody').innerHTML=''; $id('modal-empty').style.display='none';
+  overlay.classList.add('open');
+  try {
+    const res = await apiFetch(`/history?item_id=${item.itemId}&server=ALL`);
+    histAllData = {};
+    res.history.forEach(r => {
+      if (!histAllData[r.server]) histAllData[r.server]=[];
+      histAllData[r.server].push(r);
+    });
+    const servers = Object.keys(histAllData);
+    const tabs    = $id('modal-server-tabs');
+    tabs.innerHTML='';
+    if (!servers.length) { $id('modal-empty').style.display=''; return; }
+    servers.forEach(sv => {
+      const btn=document.createElement('button');
+      btn.textContent=sv; btn.dataset.server=sv;
+      btn.onclick=()=>renderHistModal(sv);
+      tabs.appendChild(btn);
+    });
+    renderHistModal(servers.includes(activeServer)?activeServer:servers[0]);
+  } catch(e) {
+    $id('modal-empty').style.display='';
+    $id('modal-empty').textContent='Erro ao carregar histórico.';
+  }
+}
+$id('modal-close').addEventListener('click', ()=>$id('modal-overlay').classList.remove('open'));
+$id('modal-overlay').addEventListener('click', e=>{ if(e.target===$id('modal-overlay')) $id('modal-overlay').classList.remove('open'); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') $id('modal-overlay').classList.remove('open'); });
+
+// ── LOAD DATA ─────────────────────────────────────────────────
+async function loadData() {
+  setBadge('loading');
+  const map = $id('sel-map').value;
+  const q   = $id('search').value.trim();
+  const qs  = new URLSearchParams({
+    store_type: activeType,
+    server:     activeServer,
+    sort:       sortState.col,
+    dir:        sortState.dir,
+    page:       currentPage,
+    page_size:  pageSize,
+  });
+  if (map) qs.set('map', map);
+  if (q)   qs.set('q', q);
+  try {
+    const res = await apiFetch(`/items?${qs}`);
+    allData    = (res.items || []).filter(i => i.itemPrice > 0);
+    totalItems = res.total || allData.length;
+    $id('s-total').textContent = fmtN(res.total || allData.length);
+    $id('s-last').textContent  = res.last_scan
+      ? new Date(res.last_scan).toLocaleString('pt-BR',{ timeZone:'America/Sao_Paulo', hour:'2-digit', minute:'2-digit', second:'2-digit' })
+      : '—';
+    const selMap=$id('sel-map'), curMap=selMap.value;
+    selMap.innerHTML='<option value="">Todos os mapas</option>';
+    (res.maps||[]).forEach(m=>{
+      const o=document.createElement('option');
+      o.value=m; o.textContent=m.replace(/\.gat$/i,'');
+      if(m===curMap) o.selected=true;
+      selMap.appendChild(o);
+    });
+    const banner = $id('info-banner');
+    if (usingProxy) {
+      banner.style.display='block';
+      banner.textContent=`ℹ️ Usando proxy para contornar CORS (proxy ${proxyIdx+1}). Para conexão direta, ative a extensão CORS Unblock.`;
+    } else {
+      banner.style.display='none';
+    }
+    $id('footer-src').textContent = '✓ paramercado.com.br/api/items' + (usingProxy ? ' (via proxy)' : ' (direto)');
+    $id('footer-time').textContent = 'atualizado às ' + new Date().toLocaleTimeString('pt-BR');
+    render();
+  } catch(e) {
+    setBadge('err');
+    $id('footer-src').textContent = '⚠ sem conexão com a API';
+    $id('tbody').innerHTML=`<tr><td colspan="9" class="empty">
+      ❌ Não foi possível conectar à API<br>
+      <small>Verifique sua conexão com a internet e tente novamente.</small>
+    </td></tr>`;
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function render() {
+  const thresh = (parseFloat($id('thresh').value)||85)/100;
+  const tbody  = $id('tbody');
+  if (!allData.length) {
+    tbody.innerHTML='<tr><td colspan="9" class="empty">Nenhum item encontrado.</td></tr>';
+    $id('s-showing').textContent='0'; $id('s-alerts').textContent='0';
+    $id('alerts-box').style.display='none';
+    renderPag(); setBadge('live'); return;
+  }
+  const alerts=[];
+  tbody.innerHTML='';
+  allData.forEach(item => {
+    const key    = (item.itemName||'').toLowerCase().trim();
+    const manAvg = manualAvgs[key]||null;
+    const price  = Number(item.itemPrice);
+    const pct    = manAvg ? (price/manAvg) : null;
+    const diff   = pct!=null ? Math.round((pct-1)*100) : null;
+    const isBuy  = pct!=null && pct<=thresh && activeType==='BUY';
+    const isHigh = pct!=null && pct>=1.2;
+    if (isBuy) alerts.push({ name:item.itemName, price, avg:manAvg, diff, seller:item.itemSellerCharName });
+    const status = manAvg
+      ? (isBuy  ? '<span class="pill pill-buy">🔔 comprar!</span>'
+        : isHigh ? '<span class="pill pill-high">caro</span>'
+        : pct<1  ? '<span class="pill pill-buy">abaixo</span>'
+        : '<span class="pill pill-avg">normal</span>')
+      : '<span class="pill pill-none">sem média</span>';
+    const diffStr = diff==null ? '—'
+      : diff>0 ? `<span class="diff-neg">+${diff}%</span>`
+      : diff<0 ? `<span class="diff-pos">${diff}%</span>` : '0%';
+    const srcs=[
+      item.databaseImgPath ? `${TARGET}${item.databaseImgPath}` : null,
+      `https://static.divine-pride.net/images/items/item/${item.itemId}.png`,
+      `https://db.irowiki.org/image/item/${item.itemId}.png`,
+    ].filter(Boolean);
+    const mapClean=(item.mapName||'').replace(/\.gat$/i,'');
+    const coords=(item.xpos!=null&&item.ypos!=null)?` (${item.xpos},${item.ypos})`:'';
+    const mapStr=mapClean
+      ? `<button class="map-btn" data-map="${mapClean}" data-x="${item.xpos||''}" data-y="${item.ypos||''}">${mapClean}${coords}</button>`
+      : '<span style="color:var(--hint)">—</span>';
+    const slot=item.slotMaxCount>0?` [${item.slotMaxCount}]`:'';
+    const manMark=manAvg?' <span style="font-size:9px;color:var(--blue)">✎</span>':'';
+    const tr=document.createElement('tr');
+    if(isBuy) tr.classList.add('row-alert');
+    tr.innerHTML=`
+      <td style="color:var(--hint);font-size:11px;text-align:center">${item.itemId||'—'}</td>
+      <td><div class="item-cell">
+        <img class="item-icon" src="" data-srcs='${JSON.stringify(srcs)}' loading="lazy" alt="">
+        <div><div class="item-name">${item.itemName||'—'}</div><div class="item-sub">${item.databaseType||''}${slot}</div></div>
+      </div></td>
+      <td class="price">${fmtZ(price)}</td>
+      <td style="color:var(--muted)">${fmtN(item.itemCnt)}</td>
+      <td class="price">${manAvg?fmtZ(manAvg)+manMark:'<span style="color:var(--hint);font-size:11px">defina →</span>'}</td>
+      <td>${diffStr}</td>
+      <td>${status}</td>
+      <td><div class="seller-cell"><div class="seller-name">${item.itemSellerCharName||'—'}</div><div class="store-name">${item.storeName||''}</div></div></td>
+      <td>${mapStr}</td>
+    `;
+    const img=tr.querySelector('img.item-icon');
+    const s2=JSON.parse(img.dataset.srcs); let si=0;
+    const tryNext=()=>{ if(si>=s2.length){img.style.display='none';return;} img.src=s2[si++]; };
+    img.onerror=tryNext; tryNext();
+    const mapBtn=tr.querySelector('.map-btn');
+    if(mapBtn){
+      mapBtn.addEventListener('click',e=>{
+        e.stopPropagation();
+        const cmd=mapBtn.dataset.x&&mapBtn.dataset.y
+          ?`/navi ${mapBtn.dataset.map} ${mapBtn.dataset.x}/${mapBtn.dataset.y}`
+          :`/navi ${mapBtn.dataset.map}`;
+        navigator.clipboard?.writeText(cmd).then(()=>showToast('✓ Copiado: '+cmd)).catch(()=>showToast(cmd));
+      });
+    }
+    tr.style.cursor='pointer';
+    tr.addEventListener('click',e=>{
+      if(e.target.classList.contains('map-btn')||e.target.closest('.map-btn')||e.target.tagName==='BUTTON') return;
+      openHistory(item);
+    });
+    tbody.appendChild(tr);
+  });
+  $id('s-alerts').textContent=alerts.length;
+  $id('s-showing').textContent=allData.length.toLocaleString('pt-BR');
+  const box=$id('alerts-box');
+  if(alerts.length){
+    box.style.display='block';
+    $id('alerts-list').innerHTML=alerts.map(a=>`<div class="alert-item">🔔 <strong>${a.name}</strong> — ${fmtZ(a.price)} (média: ${fmtZ(a.avg)}, ${a.diff}%) via ${a.seller||'?'}</div>`).join('');
+  } else { box.style.display='none'; }
+  renderPag(); setBadge('live');
+}
+
+function renderPag() {
+  const total=Math.ceil(totalItems/pageSize);
+  const pag=$id('pag'); pag.innerHTML='';
+  if(total<=1) return;
+  const range=[];
+  for(let i=Math.max(1,currentPage-3);i<=Math.min(total,currentPage+3);i++) range.push(i);
+  if(range[0]>1){range.unshift('…');range.unshift(1);}
+  if(range[range.length-1]<total){range.push('…');range.push(total);}
+  range.forEach(p=>{
+    const btn=document.createElement('button'); btn.textContent=p;
+    if(p==='…') btn.disabled=true;
+    else{ if(p===currentPage) btn.classList.add('active'); btn.onclick=()=>{currentPage=p;loadData();window.scrollTo(0,0);}; }
+    pag.appendChild(btn);
+  });
+}
+
+// ── MANUAL TAGS ───────────────────────────────────────────────
+function renderManualTags() {
+  const wrap=$id('manual-tags'); wrap.innerHTML='';
+  Object.entries(manualAvgs).forEach(([key,val])=>{
+    const tag=document.createElement('span'); tag.className='man-tag';
+    tag.innerHTML=`${key}: ${fmtZ(val)} <button data-key="${key}" title="Remover">✕</button>`;
+    tag.querySelector('button').addEventListener('click',()=>{
+      delete manualAvgs[key]; saveManual(); renderManualTags(); render();
+    });
+    wrap.appendChild(tag);
+  });
+}
+renderManualTags();
+
+// ── EVENTOS ───────────────────────────────────────────────────
+document.querySelectorAll('#tabs-server .tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#tabs-server .tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); activeServer=btn.dataset.server; currentPage=1; loadData();
+  });
+});
+document.querySelectorAll('#tabs-type .tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#tabs-type .tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); activeType=btn.dataset.type; currentPage=1; loadData();
+  });
+});
+document.querySelectorAll('thead th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.dataset.col;
+    sortState.dir=sortState.col===col?(sortState.dir==='asc'?'desc':'asc'):'asc';
+    sortState.col=col;
+    document.querySelectorAll('thead th').forEach(t=>{
+      t.classList.remove('sorted'); const si=t.querySelector('.si'); if(si) si.textContent='↕';
+    });
+    th.classList.add('sorted'); const si=th.querySelector('.si'); if(si) si.textContent=sortState.dir==='asc'?'↑':'↓';
+    currentPage=1; loadData();
+  });
+});
+let deb;
+$id('search').addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(()=>{currentPage=1;loadData();},350); });
+$id('sel-map').addEventListener('change',()=>{currentPage=1;loadData();});
+$id('sel-page-size').addEventListener('change',()=>{ pageSize=parseInt($id('sel-page-size').value); currentPage=1; loadData(); });
+$id('btn-refresh').addEventListener('click',loadData);
+$id('thresh').addEventListener('input',render);
+$id('btn-manual').addEventListener('click',()=>{
+  const item=$id('man-item').value.trim().toLowerCase();
+  const price=parseInt($id('man-price').value);
+  if(!item||isNaN(price)||price<=0){showToast('Preencha item e preço válido');return;}
+  manualAvgs[item]=price; saveManual();
+  $id('man-item').value=''; $id('man-price').value='';
+  renderManualTags(); render();
+  showToast('✓ Média definida: '+fmtZ(price));
+});
+$id('man-price').addEventListener('keydown',e=>{if(e.key==='Enter')$id('btn-manual').click();});
+
+loadData();
+setInterval(loadData, 60000);
+</script>
+</body>
+</html>
