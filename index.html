@@ -180,7 +180,7 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
 
   <!-- KPIs -->
   <div class="kpi-grid">
-    <div class="kpi green"><div class="kpi-label">Itens analisados</div><div class="kpi-val" id="k-total">—</div><div class="kpi-sub">com histórico 15 dias</div></div>
+    <div class="kpi green"><div class="kpi-label">Itens acima de 1kk</div><div class="kpi-val" id="k-total">—</div><div class="kpi-sub">média 15d + margem ≥ 1M z</div></div>
     <div class="kpi amber"><div class="kpi-label">Item mais negociado</div><div class="kpi-val" id="k-top-item" style="font-size:13px">—</div><div class="kpi-sub" id="k-top-item-sub">—</div></div>
     <div class="kpi blue"><div class="kpi-label">Maior volume (qtd)</div><div class="kpi-val" id="k-top-vol">—</div><div class="kpi-sub" id="k-top-vol-sub">—</div></div>
     <div class="kpi red"><div class="kpi-label">Maior variação 15d</div><div class="kpi-val" id="k-top-var">—</div><div class="kpi-sub" id="k-top-var-sub">—</div></div>
@@ -487,7 +487,8 @@ async function fetchAllPages() {
   }
 
   setProgress(100);
-  analyzedData = results;
+  // Filtra apenas itens com média 15d >= 1kk E variação absoluta >= 1kk (margem de revenda)
+  analyzedData = results.filter(d => d.avg15 >= 1000000 && d.varAbs >= 1000000);
   return lastScan;
 }
 
@@ -717,7 +718,7 @@ async function loadAndRender() {
     const banner=$id('proxy-banner');
     if(usingProxy){banner.style.display='block';banner.textContent=`ℹ️ Usando proxy CORS (proxy ${proxyIdx+1}).`;}
     else{banner.style.display='none';}
-    $id('footer-src').textContent='✓ paramercado.com.br — média calculada sobre os últimos 15 dias'+(usingProxy?' (via proxy)':' (direto)');
+    $id('footer-src').textContent='✓ paramercado.com.br — média 15 dias · exibindo apenas itens ≥ 1kk com margem ≥ 1kk'+(usingProxy?' (via proxy)':' (direto)');
     $id('footer-time').textContent='atualizado às '+new Date().toLocaleTimeString('pt-BR');
     setBadge('live');
   } catch(e) {
