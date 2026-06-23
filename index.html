@@ -18,8 +18,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;min-height:100vh}
-
-/* NAV */
 .nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
 .nav-logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--text);text-decoration:none}
 .nav-logo img{width:28px;height:28px;object-fit:contain}
@@ -30,17 +28,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .badge-err{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
 .spinner{display:inline-block;width:10px;height:10px;border:2px solid var(--border);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:4px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* LAYOUT */
 .container{max-width:1400px;margin:0 auto;padding:20px 16px}
-
-/* TABS PRINCIPAIS */
-.page-tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:18px;width:fit-content}
-.page-tab{font-size:13px;padding:7px 18px;border-radius:7px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s;display:flex;align-items:center;gap:6px}
-.page-tab.active{background:var(--accent);color:#fff}
-.page-tab:hover:not(.active){color:var(--text)}
-
-/* CONTROLS */
 .controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 .tabs{display:flex;gap:3px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:3px}
 .tab{font-size:12px;padding:5px 14px;border-radius:6px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s}
@@ -55,8 +43,7 @@ select:focus,input:focus{border-color:var(--accent)}
 input::placeholder{color:var(--hint)}
 select option{background:var(--bg2)}
 label{font-size:12px;color:var(--muted);white-space:nowrap}
-
-/* KPI CARDS */
+.info-pill{font-size:11px;background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);border-radius:20px;padding:4px 12px;white-space:nowrap}
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
 .kpi{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden}
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
@@ -73,20 +60,16 @@ label{font-size:12px;color:var(--muted);white-space:nowrap}
 .kpi.blue  .kpi-val{color:var(--blue)}
 .kpi.purple .kpi-val{color:var(--purple)}
 .kpi.red   .kpi-val{color:var(--red)}
-
-/* SECTION GRID */
 .section-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 @media(max-width:900px){.section-grid{grid-template-columns:1fr}}
 .section-full{margin-bottom:16px}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .card-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .card-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
-.card-sub{font-size:11px;color:var(--muted)}
+.card-sub{font-size:11px;color:var(--muted);margin-top:2px}
 .card-body{padding:0}
-
-/* RANKING LIST */
 .rank-list{list-style:none}
-.rank-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);transition:background .1s;cursor:default}
+.rank-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);transition:background .1s}
 .rank-item:last-child{border-bottom:none}
 .rank-item:hover{background:rgba(255,255,255,.03)}
 .rank-num{font-size:11px;font-weight:700;color:var(--hint);width:18px;text-align:center;flex-shrink:0}
@@ -105,17 +88,13 @@ label{font-size:12px;color:var(--muted);white-space:nowrap}
 .rank-val.blue{color:var(--blue)}
 .rank-val.purple{color:var(--purple)}
 .rank-sub{font-size:10px;color:var(--muted);margin-top:2px}
-
-/* VARIAÇÃO */
 .var-bar-wrap{width:80px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:3px}
-.var-bar{height:100%;border-radius:3px;transition:width .3s}
+.var-bar{height:100%;border-radius:3px}
 .var-bar.low{background:var(--green)}
 .var-bar.mid{background:var(--amber)}
 .var-bar.high{background:var(--red)}
-
-/* TABLE COMPLETA */
 .tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:600px}
+table{width:100%;border-collapse:collapse;min-width:700px}
 thead th{background:var(--bg3);padding:9px 12px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
 thead th:hover,thead th.sorted{color:var(--text)}
 tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
@@ -128,31 +107,26 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
 .item-sub{font-size:10px;color:var(--muted);margin-top:1px}
 .pill{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;display:inline-block;white-space:nowrap;border:1px solid transparent}
 .pill-green{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
-.pill-red  {background:var(--red-bg);  color:var(--red);  border-color:var(--red-border)}
+.pill-red{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
 .pill-amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
-.pill-blue {background:var(--blue-bg); color:var(--blue); border-color:var(--blue-border)}
+.pill-blue{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)}
 .pill-purple{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)}
 .pill-muted{background:var(--bg3);color:var(--muted);border-color:var(--border)}
-
-/* CHART */
 .chart-container{padding:14px;height:260px;position:relative}
-
-/* SEARCH */
-.search-wrap{display:flex;align-items:center;gap:8px}
 .search-wrap input{height:30px;font-size:12px;width:180px}
-
-/* EMPTY / LOADING */
 .empty{text-align:center;color:var(--muted);padding:2.5rem;font-size:13px;line-height:2}
-
-/* TOAST */
 .toast{position:fixed;bottom:18px;right:18px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;max-width:320px}
 .toast.show{opacity:1}
-
-/* FOOTER */
 .footer{margin-top:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:11px;color:var(--hint)}
-
-/* PROXY BANNER */
 .proxy-banner{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--blue);display:none}
+.progress-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;display:none}
+.progress-title{font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text)}
+.progress-bar-bg{background:var(--bg3);border-radius:6px;height:10px;overflow:hidden;margin-bottom:8px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--blue));border-radius:6px;transition:width .3s}
+.progress-info{font-size:11px;color:var(--muted)}
+.trend-up{color:var(--green);font-weight:600}
+.trend-down{color:var(--red);font-weight:600}
+.trend-flat{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -163,6 +137,7 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
     Análise de Mercado · RO LATAM
   </a>
   <div class="nav-right">
+    <span class="info-pill">📅 média 15 dias</span>
     <span class="badge badge-live" id="live-badge">● ao vivo</span>
     <button class="btn btn-primary" id="btn-refresh">↻ Atualizar</button>
   </div>
@@ -172,7 +147,14 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
 
   <div class="proxy-banner" id="proxy-banner"></div>
 
-  <!-- CONTROLES GLOBAIS -->
+  <!-- PROGRESSO DE CARREGAMENTO -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-title" id="progress-title">🔄 Buscando dados do mercado...</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+    <div class="progress-info" id="progress-info">Iniciando análise dos últimos 15 dias...</div>
+  </div>
+
+  <!-- CONTROLES -->
   <div class="controls">
     <div class="tabs" id="tabs-server">
       <button class="tab active" data-server="FREYA">Freya</button>
@@ -197,88 +179,52 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
   </div>
 
   <!-- KPIs -->
-  <div class="kpi-grid" id="kpi-grid">
-    <div class="kpi green"><div class="kpi-label">Itens analisados</div><div class="kpi-val" id="k-total">—</div><div class="kpi-sub">nesta sessão</div></div>
-    <div class="kpi amber"><div class="kpi-label">Item mais negociado</div><div class="kpi-val" id="k-top-item" style="font-size:14px">—</div><div class="kpi-sub" id="k-top-item-sub">—</div></div>
+  <div class="kpi-grid">
+    <div class="kpi green"><div class="kpi-label">Itens analisados</div><div class="kpi-val" id="k-total">—</div><div class="kpi-sub">com histórico 15 dias</div></div>
+    <div class="kpi amber"><div class="kpi-label">Item mais negociado</div><div class="kpi-val" id="k-top-item" style="font-size:13px">—</div><div class="kpi-sub" id="k-top-item-sub">—</div></div>
     <div class="kpi blue"><div class="kpi-label">Maior volume (qtd)</div><div class="kpi-val" id="k-top-vol">—</div><div class="kpi-sub" id="k-top-vol-sub">—</div></div>
-    <div class="kpi red"><div class="kpi-label">Maior variação</div><div class="kpi-val" id="k-top-var">—</div><div class="kpi-sub" id="k-top-var-sub">—</div></div>
-    <div class="kpi purple"><div class="kpi-label">Última varredura</div><div class="kpi-val" id="k-scan" style="font-size:14px">—</div><div class="kpi-sub">horário de Brasília</div></div>
+    <div class="kpi red"><div class="kpi-label">Maior variação 15d</div><div class="kpi-val" id="k-top-var">—</div><div class="kpi-sub" id="k-top-var-sub">—</div></div>
+    <div class="kpi purple"><div class="kpi-label">Última varredura</div><div class="kpi-val" id="k-scan" style="font-size:13px">—</div><div class="kpi-sub">horário de Brasília</div></div>
   </div>
 
-  <!-- SEÇÃO: RANKING FREQUÊNCIA + RANKING VOLUME -->
+  <!-- RANKINGS -->
   <div class="section-grid">
-
-    <!-- TOP FREQUÊNCIA -->
     <div class="card">
       <div class="card-head">
-        <div>
-          <div class="card-title">🔥 Mais frequentes no mercado</div>
-          <div class="card-sub">itens que aparecem mais vezes em lojas</div>
-        </div>
+        <div><div class="card-title">🔥 Mais frequentes no mercado</div><div class="card-sub">itens que aparecem mais vezes em lojas</div></div>
       </div>
-      <div class="card-body">
-        <ul class="rank-list" id="list-freq"></ul>
-      </div>
+      <div class="card-body"><ul class="rank-list" id="list-freq"></ul></div>
     </div>
-
-    <!-- TOP VOLUME -->
     <div class="card">
       <div class="card-head">
-        <div>
-          <div class="card-title">📦 Maior volume (quantidade)</div>
-          <div class="card-sub">itens com mais unidades disponíveis</div>
-        </div>
+        <div><div class="card-title">📦 Maior volume (quantidade)</div><div class="card-sub">itens com mais unidades disponíveis</div></div>
       </div>
-      <div class="card-body">
-        <ul class="rank-list" id="list-vol"></ul>
-      </div>
+      <div class="card-body"><ul class="rank-list" id="list-vol"></ul></div>
     </div>
-
   </div>
 
-  <!-- SEÇÃO: VARIAÇÃO + PREÇO MÉDIO -->
   <div class="section-grid">
-
-    <!-- VARIAÇÃO DE PREÇO -->
     <div class="card">
       <div class="card-head">
-        <div>
-          <div class="card-title">📊 Maior variação de preço</div>
-          <div class="card-sub">diferença entre menor e maior preço do mesmo item</div>
-        </div>
+        <div><div class="card-title">📊 Maior variação de preço (15 dias)</div><div class="card-sub">variação entre mín e máx dos últimos 15 dias</div></div>
       </div>
-      <div class="card-body">
-        <ul class="rank-list" id="list-var"></ul>
-      </div>
+      <div class="card-body"><ul class="rank-list" id="list-var"></ul></div>
     </div>
-
-    <!-- MAIS BARATOS / OPORTUNIDADES -->
     <div class="card">
       <div class="card-head">
-        <div>
-          <div class="card-title">💰 Maior ticket médio</div>
-          <div class="card-sub">itens com preço médio mais alto</div>
-        </div>
+        <div><div class="card-title">📈 Tendência de preço (15 dias)</div><div class="card-sub">itens com maior alta ou baixa recente</div></div>
       </div>
-      <div class="card-body">
-        <ul class="rank-list" id="list-price"></ul>
-      </div>
+      <div class="card-body"><ul class="rank-list" id="list-trend"></ul></div>
     </div>
-
   </div>
 
-  <!-- GRÁFICO + TABELA COMPLETA -->
+  <!-- GRÁFICO -->
   <div class="section-full">
     <div class="card">
       <div class="card-head">
-        <div>
-          <div class="card-title">📈 Top itens — frequência vs volume</div>
-          <div class="card-sub">comparativo visual dos itens mais negociados</div>
-        </div>
+        <div><div class="card-title">📈 Top itens — frequência vs volume</div><div class="card-sub">comparativo visual dos itens mais negociados</div></div>
       </div>
-      <div class="chart-container">
-        <canvas id="main-chart"></canvas>
-      </div>
+      <div class="chart-container"><canvas id="main-chart"></canvas></div>
     </div>
   </div>
 
@@ -286,13 +232,8 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
   <div class="section-full">
     <div class="card">
       <div class="card-head">
-        <div>
-          <div class="card-title">📋 Tabela completa de análise</div>
-          <div class="card-sub">todos os itens com métricas de frequência, volume e variação</div>
-        </div>
-        <div class="search-wrap">
-          <input type="text" id="tbl-search" placeholder="buscar item...">
-        </div>
+        <div><div class="card-title">📋 Tabela completa — média dos últimos 15 dias</div><div class="card-sub">métricas calculadas com base no histórico real</div></div>
+        <div class="search-wrap"><input type="text" id="tbl-search" placeholder="buscar item..."></div>
       </div>
       <div class="card-body tbl-wrap">
         <table>
@@ -302,10 +243,11 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
               <th data-col="name">Item <span class="si">↕</span></th>
               <th data-col="freq" class="sorted">Frequência <span class="si">↓</span></th>
               <th data-col="vol">Volume total <span class="si">↕</span></th>
-              <th data-col="minP">Preço mín. <span class="si">↕</span></th>
-              <th data-col="maxP">Preço máx. <span class="si">↕</span></th>
-              <th data-col="avgP">Preço médio <span class="si">↕</span></th>
-              <th data-col="var">Variação % <span class="si">↕</span></th>
+              <th data-col="avg15">Média 15 dias <span class="si">↕</span></th>
+              <th data-col="minP">Mín 15d <span class="si">↕</span></th>
+              <th data-col="maxP">Máx 15d <span class="si">↕</span></th>
+              <th data-col="varPct">Variação % <span class="si">↕</span></th>
+              <th data-col="trend">Tendência <span class="si">↕</span></th>
               <th>Classificação</th>
             </tr>
           </thead>
@@ -324,9 +266,8 @@ td{padding:8px 12px;vertical-align:middle;font-size:12px}
 <div class="toast" id="toast"></div>
 
 <script>
-// ── API / PROXY ───────────────────────────────────────────────
-const TARGET = 'https://paramercado.com.br';
-const API    = TARGET + '/api';
+const TARGET  = 'https://paramercado.com.br';
+const API     = TARGET + '/api';
 const PROXIES = [
   u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
   u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
@@ -337,42 +278,41 @@ let proxyIdx = 0, usingProxy = false;
 async function apiFetch(path) {
   const url = API + path;
   try {
-    const r = await fetch(url, { mode:'cors', signal:AbortSignal.timeout(5000) });
+    const r = await fetch(url, { mode:'cors', signal:AbortSignal.timeout(6000) });
     if (r.ok) { usingProxy=false; return r.json(); }
   } catch(_) {}
   for (let i=0; i<PROXIES.length; i++) {
     const idx=(proxyIdx+i)%PROXIES.length;
     try {
-      const r = await fetch(PROXIES[idx](url), { signal:AbortSignal.timeout(9000) });
+      const r = await fetch(PROXIES[idx](url), { signal:AbortSignal.timeout(10000) });
       if (r.ok) { proxyIdx=idx; usingProxy=true; return r.json(); }
     } catch(_) {}
   }
   throw new Error('API inacessível');
 }
 
-// ── ESTADO ───────────────────────────────────────────────────
 let activeServer = 'FREYA';
 let activeType   = 'BUY';
-let analyzedData = [];   // mapa: itemId -> métricas agregadas
+let analyzedData = [];
 let mainChart    = null;
 let tblSort      = { col:'freq', dir:'desc' };
 
 const $id = id => document.getElementById(id);
 
 function fmtZ(n) {
-  if (n==null) return '—';
+  if (n==null||isNaN(n)) return '—';
   const v=Number(n);
   if (v>=1000000) return (v/1000000).toFixed(2)+'M z';
   if (v>=1000)    return (v/1000).toFixed(1)+'k z';
   return v.toLocaleString('pt-BR')+' z';
 }
 function fmtN(n) { return n==null?'—':Number(n).toLocaleString('pt-BR'); }
-function pct(a,b) { return b>0?Math.round(((b-a)/a)*100):0; }
 
 function showToast(m) {
   const t=$id('toast'); t.textContent=m; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
+
 function setBadge(s) {
   const el=$id('live-badge');
   if(s==='load'){el.className='badge badge-load';el.innerHTML='<span class="spinner"></span>analisando';}
@@ -380,12 +320,80 @@ function setBadge(s) {
   else{el.className='badge badge-err';el.innerHTML='● erro';}
 }
 
-// ── BUSCA E AGREGA DADOS ──────────────────────────────────────
+function setProgress(pct, title, info) {
+  const wrap=$id('progress-wrap');
+  wrap.style.display = pct>=100 ? 'none' : 'block';
+  $id('progress-bar').style.width = Math.min(pct,100)+'%';
+  if(title) $id('progress-title').textContent = title;
+  if(info)  $id('progress-info').textContent  = info;
+}
+
+function imgSrcs(item) {
+  return [
+    item.imgPath ? `${TARGET}${item.imgPath}` : null,
+    `https://static.divine-pride.net/images/items/item/${item.id}.png`,
+    `https://db.irowiki.org/image/item/${item.id}.png`,
+  ].filter(Boolean);
+}
+function lazyImg(img, srcs) {
+  let i=0;
+  img.onerror=()=>{ if(i<srcs.length) img.src=srcs[i++]; else img.style.display='none'; };
+  if(srcs.length) img.src=srcs[i++];
+}
+function rankNumClass(i){ return i===0?'top1':i===1?'top2':i===2?'top3':''; }
+function getTopN(arr, fn, n){ return [...arr].sort(fn).slice(0,n); }
+
+// ── CALCULA MÉDIA 15 DIAS A PARTIR DO HISTÓRICO ──────────────
+function calc15dMetrics(histRows, server) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 15);
+
+  // filtra apenas o servidor correto e últimos 15 dias
+  const recent = histRows.filter(r => {
+    if (r.server !== server && server !== 'ALL') return false;
+    const d = new Date(r.scraped_date);
+    return d >= cutoff;
+  });
+
+  if (!recent.length) return null;
+
+  // ordena por data para calcular tendência
+  recent.sort((a,b) => new Date(a.scraped_date) - new Date(b.scraped_date));
+
+  const avgPrices  = recent.map(r => Number(r.avgItemPrice)).filter(v=>v>0);
+  const minPrices  = recent.map(r => Number(r.minItemPrice)).filter(v=>v>0);
+  const maxPrices  = recent.map(r => Number(r.maxItemPrice)).filter(v=>v>0);
+  const volumes    = recent.map(r => Number(r.totalItemCnt)).filter(v=>v>0);
+
+  if (!avgPrices.length) return null;
+
+  const avg15  = Math.round(avgPrices.reduce((s,v)=>s+v,0)/avgPrices.length);
+  const minP   = Math.min(...minPrices);
+  const maxP   = Math.max(...maxPrices);
+  const varPct = minP>0 ? Math.round(((maxP-minP)/minP)*100) : 0;
+  const varAbs = maxP - minP;
+  const avgVol = Math.round(volumes.reduce((s,v)=>s+v,0)/volumes.length);
+
+  // tendência: compara média da 1ª metade vs 2ª metade do período
+  const half    = Math.floor(avgPrices.length/2);
+  const firstH  = avgPrices.slice(0, half||1);
+  const secondH = avgPrices.slice(half||1);
+  const avgFirst  = firstH.reduce((s,v)=>s+v,0)/firstH.length;
+  const avgSecond = secondH.reduce((s,v)=>s+v,0)/secondH.length;
+  const trendPct  = avgFirst>0 ? Math.round(((avgSecond-avgFirst)/avgFirst)*100) : 0;
+
+  return { avg15, minP, maxP, varPct, varAbs, avgVol, trendPct, days: recent.length };
+}
+
+// ── BUSCA DADOS ───────────────────────────────────────────────
 async function fetchAllPages() {
-  const pages  = parseInt($id('sel-pages').value)||4;
+  const pages    = parseInt($id('sel-pages').value)||4;
   const pageSize = 200;
-  const map    = {}; // itemId -> { name, type, imgPath, entries:[], totalVol }
-  let lastScan = null;
+  const itemMap  = {}; // id -> info básica
+  let lastScan   = null;
+
+  // Etapa 1: busca lista de itens atuais
+  setProgress(5, '🔄 Buscando lista de itens do mercado...', 'Conectando à API...');
 
   for (let p=1; p<=pages; p++) {
     try {
@@ -403,73 +411,103 @@ async function fetchAllPages() {
       if (!items.length) break;
 
       items.forEach(item => {
-        const id   = item.itemId;
-        const name = item.itemName || 'Item '+id;
-        if (!map[id]) map[id] = { id, name, type:item.databaseType||'', imgPath:item.databaseImgPath||'', entries:[], totalVol:0 };
-        map[id].entries.push(Number(item.itemPrice));
-        map[id].totalVol += Number(item.itemCnt||0);
+        const id = item.itemId;
+        if (!itemMap[id]) {
+          itemMap[id] = {
+            id, name: item.itemName||'Item '+id,
+            type: item.databaseType||'', imgPath: item.databaseImgPath||'',
+            entries: [], totalVol: 0
+          };
+        }
+        itemMap[id].entries.push(Number(item.itemPrice));
+        itemMap[id].totalVol += Number(item.itemCnt||0);
       });
+
+      setProgress(5 + (p/pages)*25,
+        '🔄 Buscando itens do mercado...',
+        `Página ${p}/${pages} — ${Object.keys(itemMap).length} itens encontrados`
+      );
     } catch(e) { break; }
   }
 
-  // Agrega métricas
-  analyzedData = Object.values(map).map(item => {
-    const prices = item.entries.sort((a,b)=>a-b);
-    const freq   = prices.length;
-    const minP   = prices[0];
-    const maxP   = prices[prices.length-1];
-    const avgP   = Math.round(prices.reduce((s,v)=>s+v,0)/prices.length);
-    const varPct = minP>0 ? Math.round(((maxP-minP)/minP)*100) : 0;
-    const varAbs = maxP-minP;
-    return { ...item, freq, minP, maxP, avgP, varPct, varAbs, vol:item.totalVol };
-  });
+  const itemList = Object.values(itemMap);
+  const total    = itemList.length;
 
+  // Etapa 2: busca histórico de cada item (com throttle para não sobrecarregar)
+  setProgress(30, '📅 Buscando histórico dos últimos 15 dias...', `0 de ${total} itens processados`);
+
+  const BATCH = 5; // busca 5 por vez para não sobrecarregar
+  const results = [];
+
+  for (let i=0; i<itemList.length; i+=BATCH) {
+    const batch = itemList.slice(i, i+BATCH);
+
+    await Promise.all(batch.map(async item => {
+      try {
+        const res = await apiFetch(`/history?item_id=${item.id}&server=${activeServer}`);
+        const hist = res.history || [];
+        const metrics = calc15dMetrics(hist, activeServer);
+
+        results.push({
+          ...item,
+          freq:    item.entries.length,
+          vol:     item.totalVol,
+          // usa média 15d se disponível, senão usa preço atual
+          avg15:   metrics ? metrics.avg15   : Math.round(item.entries.reduce((s,v)=>s+v,0)/item.entries.length),
+          minP:    metrics ? metrics.minP    : Math.min(...item.entries),
+          maxP:    metrics ? metrics.maxP    : Math.max(...item.entries),
+          varPct:  metrics ? metrics.varPct  : (item.entries.length>1 ? Math.round(((Math.max(...item.entries)-Math.min(...item.entries))/Math.min(...item.entries))*100) : 0),
+          varAbs:  metrics ? metrics.varAbs  : (Math.max(...item.entries)-Math.min(...item.entries)),
+          avgVol:  metrics ? metrics.avgVol  : item.totalVol,
+          trendPct: metrics ? metrics.trendPct : 0,
+          hasDays: metrics ? metrics.days    : 0,
+          hasHistory: !!metrics,
+        });
+      } catch(_) {
+        // sem histórico: usa dados instantâneos
+        const prices = item.entries;
+        results.push({
+          ...item,
+          freq: prices.length, vol: item.totalVol,
+          avg15: Math.round(prices.reduce((s,v)=>s+v,0)/prices.length),
+          minP: Math.min(...prices), maxP: Math.max(...prices),
+          varPct: prices.length>1?Math.round(((Math.max(...prices)-Math.min(...prices))/Math.min(...prices))*100):0,
+          varAbs: Math.max(...prices)-Math.min(...prices),
+          avgVol: item.totalVol, trendPct: 0, hasDays: 0, hasHistory: false,
+        });
+      }
+    }));
+
+    const done = Math.min(i+BATCH, total);
+    const pct  = 30 + (done/total)*65;
+    setProgress(pct,
+      `📅 Analisando histórico dos últimos 15 dias...`,
+      `${done} de ${total} itens processados (${Math.round(pct)}%)`
+    );
+  }
+
+  setProgress(100);
+  analyzedData = results;
   return lastScan;
 }
 
-// ── RENDERIZA TUDO ────────────────────────────────────────────
-function getTopN(arr, sortFn, n) {
-  return [...arr].sort(sortFn).slice(0, n);
-}
-
-function imgSrcs(item) {
-  return [
-    item.imgPath ? `${TARGET}${item.imgPath}` : null,
-    `https://static.divine-pride.net/images/items/item/${item.id}.png`,
-    `https://db.irowiki.org/image/item/${item.id}.png`,
-  ].filter(Boolean);
-}
-
-function lazyImg(img, srcs) {
-  let i=0;
-  img.onerror=()=>{ if(i<srcs.length) img.src=srcs[i++]; else img.style.display='none'; };
-  img.src=srcs[i++];
-}
-
-function rankNumClass(i) {
-  return i===0?'top1':i===1?'top2':i===2?'top3':'';
-}
-
+// ── RENDERS ───────────────────────────────────────────────────
 function renderRankFreq(data, n) {
   const top = getTopN(data, (a,b)=>b.freq-a.freq, n);
-  const ul = $id('list-freq');
-  ul.innerHTML = '';
+  const ul  = $id('list-freq'); ul.innerHTML='';
   top.forEach((item,i)=>{
     const li=document.createElement('li'); li.className='rank-item';
-    const img=document.createElement('img'); img.className='rank-icon'; img.alt='';
-    lazyImg(img, imgSrcs(item));
     li.innerHTML=`
       <span class="rank-num ${rankNumClass(i)}">${i+1}</span>
       <img class="rank-icon" alt="">
       <div class="rank-info">
         <div class="rank-name">${item.name}</div>
-        <div class="rank-detail">${item.type||'Item'} · preço médio ${fmtZ(item.avgP)}</div>
+        <div class="rank-detail">${item.type||'Item'} · média 15d: ${fmtZ(item.avg15)}</div>
       </div>
       <div class="rank-right">
         <div class="rank-val amber">${item.freq}x</div>
         <div class="rank-sub">ocorrências</div>
-      </div>
-    `;
+      </div>`;
     lazyImg(li.querySelector('img'), imgSrcs(item));
     ul.appendChild(li);
   });
@@ -477,8 +515,7 @@ function renderRankFreq(data, n) {
 
 function renderRankVol(data, n) {
   const top = getTopN(data, (a,b)=>b.vol-a.vol, n);
-  const ul = $id('list-vol');
-  ul.innerHTML = '';
+  const ul  = $id('list-vol'); ul.innerHTML='';
   top.forEach((item,i)=>{
     const li=document.createElement('li'); li.className='rank-item';
     li.innerHTML=`
@@ -486,89 +523,94 @@ function renderRankVol(data, n) {
       <img class="rank-icon" alt="">
       <div class="rank-info">
         <div class="rank-name">${item.name}</div>
-        <div class="rank-detail">${item.type||'Item'} · ${item.freq} lojas</div>
+        <div class="rank-detail">${item.freq} lojas · média 15d: ${fmtZ(item.avg15)}</div>
       </div>
       <div class="rank-right">
         <div class="rank-val blue">${fmtN(item.vol)}</div>
         <div class="rank-sub">unidades</div>
-      </div>
-    `;
+      </div>`;
     lazyImg(li.querySelector('img'), imgSrcs(item));
     ul.appendChild(li);
   });
 }
 
 function renderRankVar(data, n) {
-  const top = getTopN(data.filter(d=>d.freq>1), (a,b)=>b.varPct-a.varPct, n);
+  const top    = getTopN(data.filter(d=>d.varPct>0), (a,b)=>b.varPct-a.varPct, n);
   const maxVar = top[0]?.varPct||1;
-  const ul = $id('list-var');
-  ul.innerHTML = '';
+  const ul     = $id('list-var'); ul.innerHTML='';
   top.forEach((item,i)=>{
-    const barW = Math.round((item.varPct/maxVar)*100);
+    const barW   = Math.round((item.varPct/maxVar)*100);
     const barCls = item.varPct>100?'high':item.varPct>30?'mid':'low';
-    const pillCls = item.varPct>100?'pill-red':item.varPct>30?'pill-amber':'pill-green';
-    li=document.createElement('li'); li.className='rank-item';
-    li.innerHTML=`
-      <span class="rank-num ${rankNumClass(i)}">${i+1}</span>
-      <img class="rank-icon" alt="">
-      <div class="rank-info">
-        <div class="rank-name">${item.name}</div>
-        <div class="rank-detail">mín ${fmtZ(item.minP)} → máx ${fmtZ(item.maxP)}</div>
-        <div class="var-bar-wrap"><div class="var-bar ${barCls}" style="width:${barW}%"></div></div>
-      </div>
-      <div class="rank-right">
-        <div class="rank-val ${item.varPct>100?'red':item.varPct>30?'amber':'green'}">+${item.varPct}%</div>
-        <div class="rank-sub">${fmtZ(item.varAbs)} dif.</div>
-      </div>
-    `;
-    lazyImg(li.querySelector('img'), imgSrcs(item));
-    ul.appendChild(li);
-  });
-}
-
-function renderRankPrice(data, n) {
-  const top = getTopN(data, (a,b)=>b.avgP-a.avgP, n);
-  const ul = $id('list-price');
-  ul.innerHTML = '';
-  top.forEach((item,i)=>{
+    const valCls = item.varPct>100?'red':item.varPct>30?'amber':'green';
     const li=document.createElement('li'); li.className='rank-item';
     li.innerHTML=`
       <span class="rank-num ${rankNumClass(i)}">${i+1}</span>
       <img class="rank-icon" alt="">
       <div class="rank-info">
         <div class="rank-name">${item.name}</div>
-        <div class="rank-detail">${item.freq} lojas · vol ${fmtN(item.vol)}</div>
+        <div class="rank-detail">mín ${fmtZ(item.minP)} → máx ${fmtZ(item.maxP)} · ${item.hasDays||'?'} dias</div>
+        <div class="var-bar-wrap"><div class="var-bar ${barCls}" style="width:${barW}%"></div></div>
       </div>
       <div class="rank-right">
-        <div class="rank-val purple">${fmtZ(item.avgP)}</div>
-        <div class="rank-sub">preço médio</div>
+        <div class="rank-val ${valCls}">+${item.varPct}%</div>
+        <div class="rank-sub">${fmtZ(item.varAbs)} dif.</div>
+      </div>`;
+    lazyImg(li.querySelector('img'), imgSrcs(item));
+    ul.appendChild(li);
+  });
+}
+
+function renderRankTrend(data, n) {
+  // mostra itens com maior variação de tendência (alta ou baixa)
+  const withTrend = data.filter(d=>d.hasHistory && d.trendPct!==0);
+  const sorted    = [...withTrend].sort((a,b)=>Math.abs(b.trendPct)-Math.abs(a.trendPct)).slice(0,n);
+  const ul        = $id('list-trend'); ul.innerHTML='';
+  if(!sorted.length){
+    ul.innerHTML='<li class="rank-item"><div style="padding:1rem;color:var(--muted);font-size:12px">Histórico insuficiente para calcular tendência.</div></li>';
+    return;
+  }
+  sorted.forEach((item,i)=>{
+    const up      = item.trendPct>0;
+    const arrow   = up?'▲':'▼';
+    const cls     = up?'trend-up':'trend-down';
+    const valCls  = up?'green':'red';
+    const li=document.createElement('li'); li.className='rank-item';
+    li.innerHTML=`
+      <span class="rank-num ${rankNumClass(i)}">${i+1}</span>
+      <img class="rank-icon" alt="">
+      <div class="rank-info">
+        <div class="rank-name">${item.name}</div>
+        <div class="rank-detail">média 15d: ${fmtZ(item.avg15)} · ${item.hasDays} registros</div>
       </div>
-    `;
+      <div class="rank-right">
+        <div class="rank-val ${valCls}"><span class="${cls}">${arrow}</span> ${Math.abs(item.trendPct)}%</div>
+        <div class="rank-sub">${up?'em alta':'em baixa'}</div>
+      </div>`;
     lazyImg(li.querySelector('img'), imgSrcs(item));
     ul.appendChild(li);
   });
 }
 
 function renderChart(data, n) {
-  const top = getTopN(data, (a,b)=>b.freq-a.freq, n>15?15:n);
-  const labels  = top.map(d=>d.name.length>18?d.name.substring(0,16)+'…':d.name);
-  const freqD   = top.map(d=>d.freq);
-  const volD    = top.map(d=>Math.round(d.vol/100)); // escala
-
+  const top    = getTopN(data, (a,b)=>b.freq-a.freq, Math.min(n,15));
+  const labels = top.map(d=>d.name.length>18?d.name.substring(0,16)+'…':d.name);
   if (mainChart) mainChart.destroy();
   mainChart = new Chart($id('main-chart'), {
     type:'bar',
     data:{
       labels,
       datasets:[
-        { label:'Frequência (lojas)', data:freqD, backgroundColor:'rgba(108,99,255,.7)', borderColor:'#6c63ff', borderWidth:1, yAxisID:'y' },
-        { label:'Volume ÷100', data:volD, backgroundColor:'rgba(91,141,238,.4)', borderColor:'#5b8dee', borderWidth:1, yAxisID:'y' },
+        { label:'Frequência (lojas)', data:top.map(d=>d.freq), backgroundColor:'rgba(108,99,255,.7)', borderColor:'#6c63ff', borderWidth:1, yAxisID:'y' },
+        { label:'Volume ÷100',        data:top.map(d=>Math.round(d.vol/100)), backgroundColor:'rgba(91,141,238,.4)', borderColor:'#5b8dee', borderWidth:1, yAxisID:'y' },
       ]
     },
     options:{
       responsive:true, maintainAspectRatio:false,
       interaction:{ mode:'index', intersect:false },
-      plugins:{ legend:{ labels:{ color:'#8b90a8', font:{ size:11 } } }, tooltip:{ callbacks:{ label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('pt-BR')}` } } },
+      plugins:{
+        legend:{ labels:{ color:'#8b90a8', font:{ size:11 } } },
+        tooltip:{ callbacks:{ label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('pt-BR')}` } }
+      },
       scales:{
         x:{ ticks:{ color:'#8b90a8', maxRotation:40, font:{ size:10 } }, grid:{ color:'#2a2f45' } },
         y:{ ticks:{ color:'#8b90a8', font:{ size:10 } }, grid:{ color:'#2a2f45' } }
@@ -577,50 +619,56 @@ function renderChart(data, n) {
   });
 }
 
-// TABELA COMPLETA
-let tblData = [];
-function renderMainTable(data) {
-  tblData = data;
-  applyTblSort();
-}
+let tblData=[];
+function renderMainTable(data) { tblData=data; applyTblSort(); }
 
 function applyTblSort() {
-  const search = ($id('tbl-search').value||'').toLowerCase().trim();
-  let rows = tblData.filter(d=>!search||d.name.toLowerCase().includes(search));
-  const {col,dir} = tblSort;
-  const mult = dir==='asc'?1:-1;
-  const colMap = { name:(a,b)=>a.name.localeCompare(b.name)*mult, freq:(a,b)=>(a.freq-b.freq)*mult, vol:(a,b)=>(a.vol-b.vol)*mult, minP:(a,b)=>(a.minP-b.minP)*mult, maxP:(a,b)=>(a.maxP-b.maxP)*mult, avgP:(a,b)=>(a.avgP-b.avgP)*mult, var:(a,b)=>(a.varPct-b.varPct)*mult };
+  const search=($id('tbl-search').value||'').toLowerCase().trim();
+  let rows=tblData.filter(d=>!search||d.name.toLowerCase().includes(search));
+  const {col,dir}=tblSort, mult=dir==='asc'?1:-1;
+  const colMap={
+    name:(a,b)=>a.name.localeCompare(b.name)*mult,
+    freq:(a,b)=>(a.freq-b.freq)*mult,
+    vol:(a,b)=>(a.vol-b.vol)*mult,
+    avg15:(a,b)=>(a.avg15-b.avg15)*mult,
+    minP:(a,b)=>(a.minP-b.minP)*mult,
+    maxP:(a,b)=>(a.maxP-b.maxP)*mult,
+    varPct:(a,b)=>(a.varPct-b.varPct)*mult,
+    trend:(a,b)=>(a.trendPct-b.trendPct)*mult,
+  };
   rows.sort(colMap[col]||(()=>0));
-
   document.querySelectorAll('thead th[data-col]').forEach(th=>{
-    th.classList.toggle('sorted', th.dataset.col===col);
+    th.classList.toggle('sorted',th.dataset.col===col);
     const si=th.querySelector('.si');
-    if(si) si.textContent = th.dataset.col===col?(dir==='asc'?'↑':'↓'):'↕';
+    if(si) si.textContent=th.dataset.col===col?(dir==='asc'?'↑':'↓'):'↕';
   });
-
-  const tbody=$id('main-tbody');
-  tbody.innerHTML='';
-  if(!rows.length){
-    tbody.innerHTML='<tr><td colspan="9" class="empty">Nenhum item encontrado.</td></tr>';
-    return;
-  }
-
+  const tbody=$id('main-tbody'); tbody.innerHTML='';
+  if(!rows.length){ tbody.innerHTML='<tr><td colspan="10" class="empty">Nenhum item encontrado.</td></tr>'; return; }
   rows.forEach((item,i)=>{
-    const varCls = item.varPct>100?'pill-red':item.varPct>30?'pill-amber':'pill-green';
-    const freqCls= item.freq>=10?'pill-purple':item.freq>=5?'pill-blue':'pill-muted';
+    const varCls  = item.varPct>100?'pill-red':item.varPct>30?'pill-amber':'pill-green';
+    const freqCls = item.freq>=10?'pill-purple':item.freq>=5?'pill-blue':'pill-muted';
+    const trendTxt = item.hasHistory
+      ? (item.trendPct>0?`<span class="trend-up">▲ +${item.trendPct}%</span>`
+        :item.trendPct<0?`<span class="trend-down">▼ ${item.trendPct}%</span>`
+        :`<span class="trend-flat">→ estável</span>`)
+      : '<span style="color:var(--hint);font-size:11px">sem dados</span>';
+    const histTag = item.hasHistory
+      ? `<span class="pill pill-green" style="font-size:9px">${item.hasDays}d histórico</span>`
+      : `<span class="pill pill-muted" style="font-size:9px">sem histórico</span>`;
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td style="color:var(--hint);font-size:11px;text-align:center">${i+1}</td>
       <td><div class="item-cell">
         <img class="item-icon" alt="">
-        <div><div class="item-name">${item.name}</div><div class="item-sub">${item.type||''}</div></div>
+        <div><div class="item-name">${item.name}</div><div class="item-sub">${item.type||''} ${histTag}</div></div>
       </div></td>
       <td><span class="pill ${freqCls}">${item.freq}x lojas</span></td>
       <td style="color:var(--blue);font-weight:600">${fmtN(item.vol)}</td>
+      <td style="font-weight:700;color:var(--amber)">${fmtZ(item.avg15)}</td>
       <td style="color:var(--green);font-weight:600">${fmtZ(item.minP)}</td>
       <td style="color:var(--red);font-weight:600">${fmtZ(item.maxP)}</td>
-      <td style="font-weight:600">${fmtZ(item.avgP)}</td>
       <td><span class="pill ${varCls}">+${item.varPct}%</span></td>
+      <td>${trendTxt}</td>
       <td>${classifyItem(item)}</td>
     `;
     lazyImg(tr.querySelector('img'), imgSrcs(item));
@@ -630,68 +678,56 @@ function applyTblSort() {
 
 function classifyItem(item) {
   const tags=[];
-  if(item.freq>=10)       tags.push('<span class="pill pill-purple">🔥 muito frequente</span>');
-  else if(item.freq>=5)   tags.push('<span class="pill pill-blue">📈 frequente</span>');
-  if(item.varPct>100)     tags.push('<span class="pill pill-red">⚡ alta volatilidade</span>');
-  else if(item.varPct>30) tags.push('<span class="pill pill-amber">〜 volátil</span>');
+  if(item.freq>=10)        tags.push('<span class="pill pill-purple">🔥 muito frequente</span>');
+  else if(item.freq>=5)    tags.push('<span class="pill pill-blue">📈 frequente</span>');
+  if(item.varPct>100)      tags.push('<span class="pill pill-red">⚡ alta volatilidade</span>');
+  else if(item.varPct>30)  tags.push('<span class="pill pill-amber">〜 volátil</span>');
   else if(item.varPct<=10&&item.freq>1) tags.push('<span class="pill pill-green">✓ estável</span>');
-  if(item.vol>=10000)     tags.push('<span class="pill pill-muted">📦 alto estoque</span>');
-  return tags.join(' ') || '<span class="pill pill-muted">—</span>';
+  if(item.trendPct>15)     tags.push('<span class="pill pill-red">▲ em alta</span>');
+  else if(item.trendPct<-15) tags.push('<span class="pill pill-green">▼ em baixa</span>');
+  if(item.vol>=10000)      tags.push('<span class="pill pill-muted">📦 alto estoque</span>');
+  return tags.join(' ')||'<span class="pill pill-muted">—</span>';
 }
 
 function renderKPIs(lastScan) {
-  const data = analyzedData;
-  $id('k-total').textContent = fmtN(data.length);
-
-  const topFreq = [...data].sort((a,b)=>b.freq-a.freq)[0];
-  if(topFreq){ $id('k-top-item').textContent=topFreq.name; $id('k-top-item-sub').textContent=topFreq.freq+' ocorrências'; }
-
-  const topVol = [...data].sort((a,b)=>b.vol-a.vol)[0];
-  if(topVol){ $id('k-top-vol').textContent=fmtN(topVol.vol); $id('k-top-vol-sub').textContent=topVol.name; }
-
-  const topVar = [...data].filter(d=>d.freq>1).sort((a,b)=>b.varPct-a.varPct)[0];
-  if(topVar){ $id('k-top-var').textContent='+'+topVar.varPct+'%'; $id('k-top-var-sub').textContent=topVar.name; }
-
-  if(lastScan){
-    $id('k-scan').textContent=new Date(lastScan).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  }
+  const data=analyzedData;
+  const withHist=data.filter(d=>d.hasHistory);
+  $id('k-total').textContent=`${fmtN(withHist.length)} / ${fmtN(data.length)}`;
+  const topFreq=[...data].sort((a,b)=>b.freq-a.freq)[0];
+  if(topFreq){$id('k-top-item').textContent=topFreq.name;$id('k-top-item-sub').textContent=topFreq.freq+' ocorrências';}
+  const topVol=[...data].sort((a,b)=>b.vol-a.vol)[0];
+  if(topVol){$id('k-top-vol').textContent=fmtN(topVol.vol);$id('k-top-vol-sub').textContent=topVol.name;}
+  const topVar=[...withHist].sort((a,b)=>b.varPct-a.varPct)[0];
+  if(topVar){$id('k-top-var').textContent='+'+topVar.varPct+'%';$id('k-top-var-sub').textContent=topVar.name;}
+  if(lastScan) $id('k-scan').textContent=new Date(lastScan).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 
-// ── LOAD PRINCIPAL ────────────────────────────────────────────
 async function loadAndRender() {
   setBadge('load');
-  const n = parseInt($id('sel-top').value)||20;
-
+  const n=parseInt($id('sel-top').value)||20;
   try {
-    const lastScan = await fetchAllPages();
-
+    const lastScan=await fetchAllPages();
     renderKPIs(lastScan);
     renderRankFreq(analyzedData, n);
     renderRankVol(analyzedData, n);
     renderRankVar(analyzedData, n);
-    renderRankPrice(analyzedData, n);
+    renderRankTrend(analyzedData, n);
     renderChart(analyzedData, n);
     renderMainTable(analyzedData);
-
     const banner=$id('proxy-banner');
-    if(usingProxy){
-      banner.style.display='block';
-      banner.textContent=`ℹ️ Usando proxy CORS (proxy ${proxyIdx+1}). Para conexão direta instale a extensão "CORS Unblock".`;
-    } else { banner.style.display='none'; }
-
-    $id('footer-src').textContent='✓ dados reais — paramercado.com.br/api/items'+(usingProxy?' (via proxy)':' (direto)');
+    if(usingProxy){banner.style.display='block';banner.textContent=`ℹ️ Usando proxy CORS (proxy ${proxyIdx+1}).`;}
+    else{banner.style.display='none';}
+    $id('footer-src').textContent='✓ paramercado.com.br — média calculada sobre os últimos 15 dias'+(usingProxy?' (via proxy)':' (direto)');
     $id('footer-time').textContent='atualizado às '+new Date().toLocaleTimeString('pt-BR');
     setBadge('live');
   } catch(e) {
     setBadge('err');
+    setProgress(100);
     $id('footer-src').textContent='⚠ falha na conexão com a API';
-    ['list-freq','list-vol','list-var','list-price'].forEach(id=>{
-      $id(id).innerHTML='<li class="rank-item"><div class="empty">Erro ao carregar dados.</div></li>';
-    });
   }
 }
 
-// ── EVENTOS ───────────────────────────────────────────────────
+// EVENTOS
 document.querySelectorAll('#tabs-server .tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('#tabs-server .tab').forEach(b=>b.classList.remove('active'));
@@ -707,20 +743,18 @@ document.querySelectorAll('#tabs-type .tab').forEach(btn=>{
 $id('btn-refresh').addEventListener('click', loadAndRender);
 $id('sel-top').addEventListener('change', loadAndRender);
 $id('sel-pages').addEventListener('change', loadAndRender);
-
 document.querySelectorAll('thead th[data-col]').forEach(th=>{
   th.addEventListener('click',()=>{
     const col=th.dataset.col;
     tblSort.dir=tblSort.col===col?(tblSort.dir==='asc'?'desc':'asc'):'desc';
-    tblSort.col=col;
-    applyTblSort();
+    tblSort.col=col; applyTblSort();
   });
 });
 let deb;
 $id('tbl-search').addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(applyTblSort,250); });
 
 loadAndRender();
-setInterval(loadAndRender, 120000); // atualiza a cada 2 min
+setInterval(loadAndRender, 300000); // atualiza a cada 5 min (pesado por causa do histórico)
 </script>
 </body>
 </html>
